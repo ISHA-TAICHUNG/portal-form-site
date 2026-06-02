@@ -115,8 +115,10 @@ function saveFile(folder, file) {
 function appendSheetRow(entryId, payload, folderUrl) {
   const sheetId = PropertiesService.getScriptProperties().getProperty(SHEET_PROPERTY);
   const sheet = SpreadsheetApp.openById(sheetId).getSheets()[0];
+  // 寫入台北時間字串,確保不論試算表本身時區設定為何都顯示台灣標準時間
+  const taipeiNow = Utilities.formatDate(new Date(), 'Asia/Taipei', 'yyyy-MM-dd HH:mm:ss');
   sheet.appendRow([
-    new Date(),
+    taipeiNow,
     entryId,
     payload.formType,
     JSON.stringify(payload.fields || {}),
