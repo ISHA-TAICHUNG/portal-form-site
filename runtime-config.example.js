@@ -1,7 +1,9 @@
 window.PORTAL_CONFIG = window.PORTAL_CONFIG || {
   api: {
-    configScriptUrl: '',
-    submitEndpoint: '',
+    configScriptUrl:
+      'https://script.google.com/macros/s/AKfycbwS4BFYqyaZsaVHzxLMWVV4bOh3O6j8bwwox-pLxl2kd2Uq43tsNFVtdwflbDuGXmku/exec',
+    submitEndpoint:
+      'https://script.google.com/macros/s/AKfycbwS4BFYqyaZsaVHzxLMWVV4bOh3O6j8bwwox-pLxl2kd2Uq43tsNFVtdwflbDuGXmku/exec',
   },
   site: {
     yearLabel: 'Year',

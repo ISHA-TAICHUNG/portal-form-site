@@ -1,16 +1,64 @@
 const CONFIG_PROPERTY = 'PORTAL_CONFIG_JSON';
 const ROOT_FOLDER_PROPERTY = 'PORTAL_ROOT_FOLDER_ID';
 const SHEET_PROPERTY = 'PORTAL_SHEET_ID';
+const DEFAULT_ROOT_FOLDER_NAME = 'portal-upload-store';
+const DEFAULT_SHEET_NAME = 'portal-submissions';
+const SHEET_HEADERS = [
+  'timestamp',
+  'entryId',
+  'formType',
+  'fieldsJson',
+  'fileNames',
+  'folderUrl',
+];
+
+function bootstrapWorkspace(configJson) {
+  const root = DriveApp.createFolder(DEFAULT_ROOT_FOLDER_NAME);
+  const spreadsheet = SpreadsheetApp.create(DEFAULT_SHEET_NAME);
+  const sheet = spreadsheet.getSheets()[0];
+  sheet.setName('submissions');
+  sheet.getRange(1, 1, 1, SHEET_HEADERS.length).setValues([SHEET_HEADERS]);
+  sheet.setFrozenRows(1);
+
+  const properties = PropertiesService.getScriptProperties();
+  properties.setProperty(CONFIG_PROPERTY, configJson);
+  properties.setProperty(ROOT_FOLDER_PROPERTY, root.getId());
+  properties.setProperty(SHEET_PROPERTY, spreadsheet.getId());
+
+  SpreadsheetApp.flush();
+  return {
+    rootFolderId: root.getId(),
+    rootFolderUrl: root.getUrl(),
+    spreadsheetId: spreadsheet.getId(),
+    spreadsheetUrl: spreadsheet.getUrl(),
+  };
+}
+
+function setPortalConfig(configJson) {
+  JSON.parse(configJson);
+  PropertiesService.getScriptProperties().setProperty(CONFIG_PROPERTY, configJson);
+  return { ok: true };
+}
 
 function doGet() {
-  const config = PropertiesService.getScriptProperties().getProperty(CONFIG_PROPERTY) || '{}';
-  return ContentService.createTextOutput(`window.PORTAL_CONFIG=${config};`)
+  const configJson = PropertiesService.getScriptProperties().getProperty(CONFIG_PROPERTY) || '{}';
+  const config = JSON.parse(configJson);
+  const serviceUrl = ScriptApp.getService().getUrl();
+  config.api = {
+    ...(config.api || {}),
+    configScriptUrl: serviceUrl,
+    submitEndpoint: serviceUrl,
+  };
+  return ContentService.createTextOutput(`window.PORTAL_CONFIG=${JSON.stringify(config)};`)
     .setMimeType(ContentService.MimeType.JAVASCRIPT);
 }
 
 function doPost(event) {
   try {
     const payload = JSON.parse(event.postData.contents || '{}');
+    if (payload.action === 'bootstrap') {
+      return jsonOutput(handleBootstrap(payload));
+    }
     const entryId = payload.fields.entryId || createEntryId(payload.formType);
     const folder = getOrCreateEntryFolder(entryId, payload);
 
@@ -21,6 +69,17 @@ function doPost(event) {
   } catch (error) {
     return jsonOutput({ ok: false, message: error.message });
   }
+}
+
+function handleBootstrap(payload) {
+  const properties = PropertiesService.getScriptProperties();
+  if (properties.getProperty(CONFIG_PROPERTY)) {
+    throw new Error('Workspace is already bootstrapped.');
+  }
+  return {
+    ok: true,
+    ...bootstrapWorkspace(payload.configJson),
+  };
 }
 
 function createEntryId(formType) {

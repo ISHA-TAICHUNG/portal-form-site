@@ -1,3 +1,4 @@
 runtime-config.local.js
+.clasp.json
 .env
 .DS_Store
