@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Portal Shell</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700;900&family=Source+Han+Sans+TC:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="icon" href="data:," />
+    <script src="./runtime-config.example.js" defer></script>
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand-mark" href="#home" aria-label="回首頁">
+          <span class="brand-symbol">P</span>
+          <span class="brand-copy">
+            <span data-config="site.shortTitle">Portal</span>
+            <small data-config="site.yearLabel">Year</small>
+          </span>
+        </a>
+
+        <nav class="nav-links" aria-label="主要導覽">
+          <a href="#home">首頁</a>
+          <a href="#register">報名</a>
+          <a href="#supplement">補件</a>
+          <a href="#subjects">科目</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="view is-active" id="home-view" data-view="home">
+          <div class="hero-band">
+            <div class="hero-grid">
+              <div class="hero-copy reveal">
+                <p class="kicker" data-config="site.yearLabel">Year</p>
+                <h1 data-config="site.title">Portal Title</h1>
+                <p class="lede" data-config="site.summary">
+                  Configuration is loading. Please refresh if this message remains.
+                </p>
+                <div class="action-row">
+                  <a class="button primary" href="#register">
+                    <span>立即報名</span>
+                    <span aria-hidden="true">→</span>
+                  </a>
+                  <a class="button secondary" href="#supplement">
+                    <span>上傳補件</span>
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                </div>
+              </div>
+
+              <aside class="deadline-panel reveal delay-1" aria-label="重要期限">
+                <span class="panel-label">報名截止</span>
+                <strong data-deadline-label>--</strong>
+                <div class="countdown" aria-live="polite">
+                  <span><b data-countdown-days>--</b>天</span>
+                  <span><b data-countdown-hours>--</b>時</span>
+                  <span><b data-countdown-minutes>--</b>分</span>
+                </div>
+                <p data-config="site.deadlineNote">Deadline note</p>
+              </aside>
+            </div>
+          </div>
+
+          <section class="notice-band reveal delay-2" aria-label="重點提醒">
+            <div class="notice-track" data-highlights></div>
+          </section>
+
+          <section class="content-band timeline-section reveal" aria-labelledby="timeline-title">
+            <div class="section-heading">
+              <span>Timeline</span>
+              <h2 id="timeline-title">重要時程</h2>
+            </div>
+            <ol class="timeline" data-timeline></ol>
+          </section>
+
+          <section class="content-band subject-section reveal" id="subjects" aria-labelledby="subjects-title">
+            <div class="section-heading">
+              <span>Subjects</span>
+              <h2 id="subjects-title">指定科目摘要</h2>
+            </div>
+            <div class="subject-grid" data-subject-summary></div>
+          </section>
+
+          <section class="contact-band reveal" aria-label="聯絡資訊">
+            <div>
+              <span class="section-eyebrow">Contact</span>
+              <h2>有問題請洽承辦窗口</h2>
+            </div>
+            <div class="contact-list" data-contact></div>
+          </section>
+        </section>
+
+        <section class="view" id="register-view" data-view="register">
+          <form class="form-layout" data-form="initial">
+            <div class="form-intro">
+              <span class="section-eyebrow">Registration</span>
+              <h1>線上報名</h1>
+              <p data-config="forms.initialIntro">請填寫基本資料、選擇科目並上傳審查資料。</p>
+            </div>
+
+            <div class="form-section">
+              <h2>基本資料</h2>
+              <div class="field-grid">
+                <label>
+                  姓名
+                  <input name="name" autocomplete="name" required />
+                </label>
+                <label>
+                  手機
+                  <input name="mobile" inputmode="tel" autocomplete="tel" required />
+                </label>
+                <label>
+                  電子郵件
+                  <input name="email" type="email" autocomplete="email" required />
+                </label>
+                <label>
+                  現職單位
+                  <input name="organization" required />
+                </label>
+                <label>
+                  現任職稱
+                  <input name="role" required />
+                </label>
+                <label>
+                  通訊地址
+                  <input name="address" autocomplete="street-address" required />
+                </label>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h2>專業資料</h2>
+              <div class="field-grid">
+                <label>
+                  最高學歷
+                  <input name="education" required />
+                </label>
+                <label>
+                  授課經歷摘要
+                  <input name="teachingExperience" required />
+                </label>
+                <label class="wide">
+                  專長領域
+                  <textarea name="expertise" rows="4" required></textarea>
+                </label>
+                <label>
+                  科目 1
+                  <select name="subjectOne" data-subject-select required></select>
+                </label>
+                <label>
+                  科目 2
+                  <select name="subjectTwo" data-subject-select></select>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h2>檔案上傳</h2>
+              <div class="upload-grid">
+                <label class="upload-tile">
+                  講師資格審查表
+                  <input name="qualificationFile" type="file" data-file required />
+                </label>
+                <label class="upload-tile">
+                  學經歷及佐證資料
+                  <input name="evidenceFile" type="file" data-file required />
+                </label>
+                <label class="upload-tile">
+                  其他補充資料
+                  <input name="extraFile" type="file" data-file />
+                </label>
+              </div>
+              <p class="form-note" data-config="forms.fileRule">File rule</p>
+            </div>
+
+            <div class="form-actions">
+              <p data-status="initial"></p>
+              <button class="button primary" type="submit">送出報名</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="view" id="supplement-view" data-view="supplement">
+          <form class="form-layout compact" data-form="supplement">
+            <div class="form-intro">
+              <span class="section-eyebrow">Materials</span>
+              <h1>補件上傳</h1>
+              <p data-config="forms.supplementIntro">請以報名編號識別並上傳指定資料。</p>
+            </div>
+
+            <div class="form-section">
+              <h2>識別資料</h2>
+              <div class="field-grid">
+                <label>
+                  報名編號
+                  <input name="entryId" required />
+                </label>
+                <label>
+                  姓名
+                  <input name="name" required />
+                </label>
+                <label>
+                  電子郵件
+                  <input name="email" type="email" required />
+                </label>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h2>補件檔案</h2>
+              <div class="upload-grid">
+                <label class="upload-tile">
+                  教學大綱
+                  <input name="outlineFile" type="file" data-file />
+                </label>
+                <label class="upload-tile">
+                  教案簡報檔
+                  <input name="slideFile" type="file" data-file />
+                </label>
+                <label class="upload-tile">
+                  修正版教案
+                  <input name="revisedFile" type="file" data-file />
+                </label>
+              </div>
+              <p class="form-note" data-config="forms.fileRule">File rule</p>
+            </div>
+
+            <div class="form-actions">
+              <p data-status="supplement"></p>
+              <button class="button primary" type="submit">送出補件</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="view" id="success-view" data-view="success">
+          <div class="success-panel">
+            <span class="section-eyebrow">Submitted</span>
+            <h1>資料已送出</h1>
+            <p data-success-message>系統已收到資料。</p>
+            <a class="button secondary" href="#home">回首頁</a>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
