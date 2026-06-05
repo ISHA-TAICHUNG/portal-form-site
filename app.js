@@ -39,7 +39,7 @@ function renderTimeline() {
     .map(
       (item) => `
         <li>
-          <time datetime="${item.date}">${item.date}</time>
+          <time datetime="${item.date}">${item.label || item.date}</time>
           <h3>${item.title}</h3>
           <p>${item.detail}</p>
         </li>

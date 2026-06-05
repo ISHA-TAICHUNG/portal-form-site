@@ -59,6 +59,9 @@ function doPost(event) {
     if (payload.action === 'bootstrap') {
       return jsonOutput(handleBootstrap(payload));
     }
+    if (payload.action === 'admin:updateConfig') {
+      return jsonOutput(handleAdminUpdateConfig(payload));
+    }
     const entryId = payload.fields.entryId || createEntryId(payload.formType);
     const folder = getOrCreateEntryFolder(entryId, payload);
 
@@ -80,6 +83,45 @@ function handleBootstrap(payload) {
     ok: true,
     ...bootstrapWorkspace(payload.configJson),
   };
+}
+
+function handleAdminUpdateConfig(payload) {
+  assertWorkspaceProof(payload);
+  return {
+    ok: true,
+    ...setPortalConfig(payload.configJson),
+  };
+}
+
+function assertWorkspaceProof(payload) {
+  const properties = PropertiesService.getScriptProperties();
+  const expectedSheetId = properties.getProperty(SHEET_PROPERTY);
+  const expectedRootFolderId = properties.getProperty(ROOT_FOLDER_PROPERTY);
+  const providedSheetId = String(payload.sheetId || '');
+  const providedRootFolderId = String(payload.rootFolderId || '');
+
+  if (!expectedSheetId || !expectedRootFolderId) {
+    throw new Error('Workspace is not bootstrapped yet.');
+  }
+
+  if (providedSheetId !== expectedSheetId || providedRootFolderId !== expectedRootFolderId) {
+    throw new Error('Workspace proof does not match.');
+  }
+
+  const rawDigest = Utilities.computeDigest(
+    Utilities.DigestAlgorithm.SHA_256,
+    `${expectedSheetId}:${expectedRootFolderId}`,
+  );
+  const expectedProof = rawDigest
+    .map((byte) => {
+      const normalized = byte < 0 ? byte + 256 : byte;
+      return normalized.toString(16).padStart(2, '0');
+    })
+    .join('');
+
+  if (String(payload.proof || '') !== expectedProof) {
+    throw new Error('Workspace proof is invalid.');
+  }
 }
 
 function createEntryId(formType) {
