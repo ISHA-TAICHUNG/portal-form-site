@@ -49,15 +49,15 @@
   }
 
   function maskIdentity(value) {
-    if (!value) return "??;
-    if (value.length <= 4) return "??.repeat(value.length);
-    return value.charAt(0) + "??.repeat(Math.max(4, value.length - 3)) + value.slice(-2);
+    if (!value) return "—";
+    if (value.length <= 4) return "•".repeat(value.length);
+    return value.charAt(0) + "•".repeat(Math.max(4, value.length - 3)) + value.slice(-2);
   }
 
   function formatCheckinSheet(value) {
     var text = String(value || "").trim();
-    if (!text) return "撠閮剖?";
-    if (/^\d+$/.test(text)) return "蝚?" + text + " 撘?;
+    if (!text) return "尚未設定";
+    if (/^\d+$/.test(text)) return "第 " + text + " 張";
     return text;
   }
 
@@ -86,17 +86,17 @@
   function showResult(record) {
     state.record = record;
     state.identityRevealed = false;
-    seatNumber.textContent = record.seatNo || "??;
-    successSeatNumber.textContent = record.seatNo || "??;
+    seatNumber.textContent = record.seatNo || "—";
+    successSeatNumber.textContent = record.seatNo || "—";
     checkinSheetNumber.textContent = formatCheckinSheet(record.checkInSheet);
     successSheetNumber.textContent = formatCheckinSheet(record.checkInSheet);
-    personName.textContent = record.name || "??;
-    birthDate.textContent = record.birthDate || "??;
+    personName.textContent = record.name || "—";
+    birthDate.textContent = record.birthDate || "—";
     identityMasked.textContent = maskIdentity(record.id);
-    identityFull.textContent = record.id || "??;
+    identityFull.textContent = record.id || "—";
     identityMasked.hidden = false;
     identityFull.hidden = true;
-    revealIdentity.textContent = "憿舐內摰摮?";
+    revealIdentity.textContent = "顯示完整字號";
     revealIdentity.setAttribute("aria-pressed", "false");
     confirmDetails.checked = false;
     confirmButton.disabled = true;
@@ -104,7 +104,7 @@
     resultSection.hidden = false;
     successSection.hidden = true;
     lookupInput.value = "";
-    setStatus("撌脫?啗???隢?銝撠?, "success");
+    setStatus("已找到資料，請向下核對。", "success");
     window.setTimeout(function () {
       resultSection.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 60);
@@ -113,18 +113,18 @@
   function clearPersonalDataFromPage() {
     state.record = null;
     state.identityRevealed = false;
-    personName.textContent = "??;
-    birthDate.textContent = "??;
-    identityMasked.textContent = "??;
-    identityFull.textContent = "??;
-    seatNumber.textContent = "??;
-    checkinSheetNumber.textContent = "撠閮剖?";
+    personName.textContent = "—";
+    birthDate.textContent = "—";
+    identityMasked.textContent = "—";
+    identityFull.textContent = "—";
+    seatNumber.textContent = "—";
+    checkinSheetNumber.textContent = "尚未設定";
     lookupInput.value = "";
   }
 
   function showSuccess() {
-    var seat = state.record ? state.record.seatNo || "?? : "??;
-    var sheet = state.record ? formatCheckinSheet(state.record.checkInSheet) : "撠閮剖?";
+    var seat = state.record ? state.record.seatNo || "—" : "—";
+    var sheet = state.record ? formatCheckinSheet(state.record.checkInSheet) : "尚未設定";
     successSeatNumber.textContent = seat;
     successSheetNumber.textContent = sheet;
     resultSection.hidden = true;
@@ -201,15 +201,15 @@
 
   function friendlyError(error) {
     if (error && error.message === "MISSING_API_URL") {
-      return "?亥岷??撠閮剖?嚗?? config.js 憛怠 Apps Script /exec 蝬脣???;
+      return "查詢服務尚未設定，請先在 config.js 填入 Apps Script /exec 網址。";
     }
     if (error && error.message === "INVALID_API_URL") {
-      return "?亥岷??蝬脣??澆?銝迤蝣綽?隢炎??config.js??;
+      return "查詢服務網址格式不正確，請檢查 config.js。";
     }
     if (error && error.message === "TIMEOUT") {
-      return "?亥岷?暹?嚗?蝔??岫??;
+      return "查詢逾時，請稍後再試。";
     }
-    return "?亥岷???急??⊥?雿輻嚗?蝔??岫??;
+    return "查詢服務暫時無法使用，請稍後再試。";
   }
 
   lookupInput.addEventListener("input", function () {
@@ -225,13 +225,13 @@
     var identity = normaliseIdentity(lookupInput.value);
 
     if (!isPlausibleIdentity(identity)) {
-      showInputError("隢撓?亙??渲澈?Ⅳ嚗撠?6 蝣潘????望?摮??摮????????);
+      showInputError("請輸入完整身分碼（至少 6 碼，僅限英文字母、數字或連字號）。");
       lookupInput.focus();
       return;
     }
 
     setLoading(true);
-    setStatus("甇??亥岷嚗?蝔?);
+    setStatus("正在查詢，請稍候…");
 
     lookupWithJsonp(identity)
       .then(function (payload) {
@@ -239,7 +239,7 @@
           throw new Error("SERVICE_ERROR");
         }
         if (payload.found !== true || !payload.record) {
-          setStatus("?亦蝚血?鞈?嚗?蝣箄?撌脰撓?亙??渲澈?Ⅳ??, "error");
+          setStatus("查無符合資料，請確認已輸入完整身分碼。", "error");
           return;
         }
         showResult(payload.record);
@@ -257,7 +257,7 @@
     state.identityRevealed = !state.identityRevealed;
     identityMasked.hidden = state.identityRevealed;
     identityFull.hidden = !state.identityRevealed;
-    revealIdentity.textContent = state.identityRevealed ? "?梯?摮?" : "憿舐內摰摮?";
+    revealIdentity.textContent = state.identityRevealed ? "隱藏字號" : "顯示完整字號";
     revealIdentity.setAttribute("aria-pressed", String(state.identityRevealed));
   });
 
