@@ -7,24 +7,24 @@
     <meta name="robots" content="noindex, nofollow, noarchive" />
     <meta
       name="description"
-      content="頛詨頨怠?蝣潘?蝣箄?憪??澈??摮???僑??漣??蝪賢銵具?
+      content="輸入身分碼，確認姓名、身分證字號、出生年月日、座號與簽到表。"
     />
-    <title>?犖摨找??亥岷</title>
+    <title>個人座位查詢</title>
     <link rel="stylesheet" href="./styles.css" />
     <script src="./config.js" defer></script>
     <script src="./app.js" defer></script>
   </head>
   <body>
-    <a class="skip-link" href="#main-content">頝喳銝餉??批捆</a>
+    <a class="skip-link" href="#main-content">跳到主要內容</a>
 
     <div class="app-shell">
-      <aside class="sidebar" aria-label="??撠汗">
-        <a class="sidebar-brand" href="#top" aria-label="??犖摨找??亥岷擐?">
+      <aside class="sidebar" aria-label="服務導覽">
+        <a class="sidebar-brand" href="#top" aria-label="回到個人座位查詢首頁">
           <span class="brand-logo" aria-hidden="true">
             <span></span><span></span>
           </span>
           <span class="brand-wordmark">
-            <strong>摨找??亥岷</strong>
+            <strong>座位查詢</strong>
             <small>CHECK-IN DESK</small>
           </span>
         </a>
@@ -38,7 +38,7 @@
                 <path d="m16 16 4.2 4.2" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
               </svg>
             </span>
-            <span>?犖摨找??亥岷</span>
+            <span>個人座位查詢</span>
           </a>
         </nav>
 
@@ -52,15 +52,15 @@
             </svg>
           </span>
           <span>
-            <strong>?梁?????/strong>
-            <small>?亥岷銝神?亦汗??/small>
+            <strong>隱私與安全</strong>
+            <small>查詢不寫入瀏覽器</small>
           </span>
         </div>
 
         <div class="sidebar-mode">
           <span class="mode-avatar" aria-hidden="true">P</span>
           <span>
-            <strong>?祇??亥岷璅∪?</strong>
+            <strong>公開查詢模式</strong>
             <small>Personal access</small>
           </span>
         </div>
@@ -69,12 +69,12 @@
       <div class="dashboard">
         <header class="topbar">
           <div class="topbar-title">
-            <button class="mobile-menu" type="button" aria-label="??撠汗" aria-expanded="false">
+            <button class="mobile-menu" type="button" aria-label="開啟導覽" aria-expanded="false">
               <span></span><span></span><span></span>
             </button>
             <div>
               <p class="topbar-kicker">WORKSPACE / PERSONAL CHECK</p>
-              <span>?犖摨找??亥岷</span>
+              <span>個人座位查詢</span>
             </div>
           </div>
 
@@ -86,13 +86,13 @@
                   <path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
               </span>
-              <span>?梁?靽風銝?/span>
+              <span>隱私保護中</span>
             </div>
             <div class="topbar-divider" aria-hidden="true"></div>
             <div class="topbar-profile">
               <span class="profile-avatar" aria-hidden="true">P</span>
-              <span>蝟餌絞雿輻??/span>
-              <span class="profile-chevron" aria-hidden="true">??/span>
+              <span>系統使用者</span>
+              <span class="profile-chevron" aria-hidden="true">⌄</span>
             </div>
           </div>
         </header>
@@ -100,22 +100,22 @@
         <main id="main-content" class="dashboard-main" tabindex="-1">
           <div id="top" class="dashboard-heading">
             <div>
-              <p class="breadcrumb">擐? <span>/</span> ?犖摨找??亥岷</p>
-              <h1>?犖摨找??亥岷</h1>
-              <p>頛詨頨怠?蝣潘?蝣箄?雿?摨扯??偷?啗”?閮???/p>
+              <p class="breadcrumb">首頁 <span>/</span> 個人座位查詢</p>
+              <h1>個人座位查詢</h1>
+              <p>輸入身分碼，確認你的座號、簽到表與登記資料。</p>
             </div>
           </div>
 
           <section id="lookup-panel" class="search-panel" aria-labelledby="lookup-title">
             <div class="search-panel-copy">
               <p class="panel-kicker">QUICK LOOKUP</p>
-              <h2 id="lookup-title">頛詨頨怠?蝣?/h2>
-              <p>隢撓?亙??渲澈??摮?嚗澈?Ⅳ嚗頂蝯望??曉???貊泵?蝑???/p>
+              <h2 id="lookup-title">輸入身分碼</h2>
+              <p>請輸入完整身分證字號／身分碼，系統會找出與你相符的單筆資料。</p>
             </div>
 
             <form id="lookup-form" class="lookup-form" novalidate>
               <div class="field-group">
-                <label for="identity-code">頨怠?霅???頨怠?蝣潘??函Ⅳ嚗?/label>
+                <label for="identity-code">身分證字號／身分碼（全碼）</label>
                 <div class="input-shell">
                   <span class="input-prefix" aria-hidden="true">
                     <svg viewBox="0 0 24 24" fill="none">
@@ -132,21 +132,21 @@
                     autocapitalize="characters"
                     spellcheck="false"
                     maxlength="20"
-                    placeholder="隢撓?亥澈??摮?"
+                    placeholder="請輸入身分證字號"
                     aria-describedby="identity-help"
                     required
                   />
                 </div>
-                <p id="identity-help" class="field-help">?望?摮?銝?憭批?撖恬?隢撓?亙??游???/p>
+                <p id="identity-help" class="field-help">英文字母不分大小寫，請輸入完整字號。</p>
               </div>
               <button id="lookup-button" class="button button-primary" type="submit">
-                <span class="button-label">?亥岷摨找?</span>
+                <span class="button-label">查詢座位</span>
                 <span class="button-spinner" aria-hidden="true"></span>
-                <span class="button-arrow" aria-hidden="true">??/span>
+                <span class="button-arrow" aria-hidden="true">↗</span>
               </button>
             </form>
 
-            <aside class="privacy-callout" aria-label="?梁???">
+            <aside class="privacy-callout" aria-label="隱私提醒">
               <span class="callout-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none">
                   <path d="M12 3.5 19 6v5.4c0 4.4-2.8 7.5-7 9.1-4.2-1.6-7-4.7-7-9.1V6l7-2.5Z" stroke="currentColor" stroke-width="1.8" />
@@ -154,8 +154,8 @@
                 </svg>
               </span>
               <div>
-                <strong>?梁???</strong>
-                <p>?亥岷蝯???摨找?蝣箄?雿輻嚗???摮??游??柴?/p>
+                <strong>隱私提醒</strong>
+                <p>查詢結果僅供座位確認使用，不會保存完整名單。</p>
               </div>
             </aside>
 
@@ -166,25 +166,25 @@
             <div class="section-toolbar">
               <div>
                 <p class="panel-kicker">VERIFICATION RESULT</p>
-                <h2 id="result-title">撽?蝯?</h2>
+                <h2 id="result-title">驗證結果</h2>
               </div>
-              <span class="result-pill"><span aria-hidden="true">??/span> 撽???</span>
+              <span class="result-pill"><span aria-hidden="true">✓</span> 驗證成功</span>
             </div>
 
             <div class="result-grid">
               <article class="seat-card" aria-labelledby="seat-label">
                 <div class="seat-card-heading">
-                  <span id="seat-label">摨扯?</span>
-                  <span class="seat-card-status"><span aria-hidden="true">??/span> 撌脫??/span>
+                  <span id="seat-label">座號</span>
+                  <span class="seat-card-status"><span aria-hidden="true">●</span> 已找到</span>
                 </div>
-                <output id="seat-number" class="seat-number" aria-live="polite">??/output>
+                <output id="seat-number" class="seat-number" aria-live="polite">—</output>
                 <div class="seat-sheet-badge">
-                  <span>蝪賢銵?/span>
-                  <strong id="checkin-sheet-number">撠閮剖?</strong>
+                  <span>簽到表</span>
+                  <strong id="checkin-sheet-number">尚未設定</strong>
                 </div>
                 <div class="seat-card-footer">
-                  <span class="seat-footer-icon" aria-hidden="true">??/span>
-                  <span>隢?摨扯?撠勗漣嚗?雓?</span>
+                  <span class="seat-footer-icon" aria-hidden="true">▣</span>
+                  <span>請依座號就座，謝謝！</span>
                 </div>
               </article>
 
@@ -192,79 +192,79 @@
                 <div class="identity-card-heading">
                   <div>
                     <p class="panel-kicker">CHECK DETAILS</p>
-                    <h3 id="identity-title">?犖鞈?</h3>
+                    <h3 id="identity-title">個人資料</h3>
                   </div>
-                  <span class="result-pill is-light"><span aria-hidden="true">??/span> 敺Ⅱ隤?/span>
+                  <span class="result-pill is-light"><span aria-hidden="true">✓</span> 待確認</span>
                 </div>
 
                 <dl class="detail-list">
                   <div class="detail-row">
-                    <dt>憪?</dt>
-                    <dd id="person-name">??/dd>
+                    <dt>姓名</dt>
+                    <dd id="person-name">—</dd>
                   </div>
                   <div class="detail-row">
-                    <dt>頨怠?霅???/dt>
+                    <dt>身分證字號</dt>
                     <dd class="identity-value">
-                      <span id="identity-masked">??/span>
-                      <span id="identity-full" hidden>??/span>
-                      <button id="reveal-identity" class="text-button" type="button" aria-pressed="false">憿舐內摰摮?</button>
+                      <span id="identity-masked">—</span>
+                      <span id="identity-full" hidden>—</span>
+                      <button id="reveal-identity" class="text-button" type="button" aria-pressed="false">顯示完整字號</button>
                     </dd>
                   </div>
                   <div class="detail-row">
-                    <dt>?箇?撟湔???/dt>
-                    <dd id="birth-date">??/dd>
+                    <dt>出生年月日</dt>
+                    <dd id="birth-date">—</dd>
                   </div>
                 </dl>
-                <p class="identity-note">隢Ⅱ隤誑銝??????砌犖鞈??貊泵??/p>
+                <p class="identity-note">請確認以上三項資料與本人資料相符。</p>
               </article>
             </div>
 
             <form id="confirmation-form" class="confirmation-card">
               <div class="confirmation-copy">
-                <span class="confirmation-icon" aria-hidden="true">??/span>
+                <span class="confirmation-icon" aria-hidden="true">✓</span>
                 <div>
-                  <strong>蝣箄?鞈?甇?Ⅱ</strong>
-                  <p>?暸敺??甈∟??Ⅱ隤?/p>
+                  <strong>確認資料正確</strong>
+                  <p>勾選後完成本次資料確認。</p>
                 </div>
               </div>
               <label class="check-control" for="confirm-details">
                 <input id="confirm-details" type="checkbox" />
                 <span class="custom-check" aria-hidden="true"></span>
-                <span>?歇蝣箄?憪??澈??摮???僑??迤蝣箝?/span>
+                <span>我已確認姓名、身分證字號及出生年月日皆正確。</span>
               </label>
               <div class="confirmation-actions">
-                <button id="confirm-button" class="button button-confirm" type="submit" disabled>蝣箄?鞈?</button>
-                <button id="report-button" class="button button-quiet" type="button">鞈??炊</button>
+                <button id="confirm-button" class="button button-confirm" type="submit" disabled>確認資料</button>
+                <button id="report-button" class="button button-quiet" type="button">資料有誤</button>
               </div>
-              <p id="report-help" class="report-help" tabindex="-1" hidden>隢?銝?摰?蝣箄?嚗蒂靘?格??輯齒?桐????蝯⊥撘?????憿?/p>
+              <p id="report-help" class="report-help" tabindex="-1" hidden>請先不要完成確認，並依通知單或承辦單位提供的聯絡方式反映資料問題。</p>
             </form>
           </section>
 
           <section id="success-section" class="success-section" aria-labelledby="success-title" hidden>
             <div class="success-card">
-              <div class="success-icon" aria-hidden="true">??/div>
+              <div class="success-icon" aria-hidden="true">✓</div>
               <p class="panel-kicker">CONFIRMED</p>
-              <h2 id="success-title">鞈?蝣箄?摰?</h2>
-              <p>隢?雿??漣???勗?脣??銝餉齒?桐??內雿輻??/p>
+              <h2 id="success-title">資料確認完成</h2>
+              <p>請記住你的座號，報到或進場時依主辦單位指示使用。</p>
               <div class="success-result">
                 <div class="success-seat">
-                  <span>雿?摨扯?</span>
-                  <strong id="success-seat-number">??/strong>
+                  <span>你的座號</span>
+                  <strong id="success-seat-number">—</strong>
                 </div>
                 <div class="success-sheet">
-                  <span>蝪賢銵?/span>
-                  <strong id="success-sheet-number">撠閮剖?</strong>
+                  <span>簽到表</span>
+                  <strong id="success-sheet-number">尚未設定</strong>
                 </div>
               </div>
-              <button id="new-query-button" class="button button-secondary" type="button">?亥岷?虫?蝑???/button>
+              <button id="new-query-button" class="button button-secondary" type="button">查詢另一筆資料</button>
             </div>
           </section>
 
         </main>
 
         <footer class="dashboard-footer">
-          <span>?祇????犖鞈??漣?Ⅱ隤蝙?具?/span>
-          <span>?亥???隤歹?隢摰?蝣箄?嚗?亥蝯⊥颲血雿?/span>
+          <span>本頁僅供個人資料與座號確認使用。</span>
+          <span>若資料有誤，請勿完成確認，直接聯絡承辦單位。</span>
         </footer>
       </div>
     </div>
