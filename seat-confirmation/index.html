@@ -12,7 +12,7 @@
     <title>個人座位查詢</title>
     <link rel="stylesheet" href="./styles.css" />
     <script src="./config.js?v=20260811-jsonp-fix" defer></script>
-    <script src="./app.js?v=20260811-jsonp-fix" defer></script>
+    <script src="./app.js?v=20260811-confirm-writeback" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳到主要內容</a>
@@ -236,6 +236,7 @@
                 <button id="confirm-button" class="button button-confirm" type="submit" disabled>確認資料</button>
                 <button id="report-button" class="button button-quiet" type="button">資料有誤</button>
               </div>
+              <p id="confirmation-status" class="report-help" role="status" aria-live="polite"></p>
               <p id="report-help" class="report-help" tabindex="-1" hidden>請先不要完成確認，並依通知單或承辦單位提供的聯絡方式反映資料問題。</p>
             </form>
           </section>
@@ -270,4 +271,3 @@
     </div>
   </body>
 </html>
-
