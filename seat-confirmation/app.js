@@ -33,9 +33,7 @@
   var correctBirthField = document.getElementById("correct-birth-field");
   var correctName = document.getElementById("correct-name");
   var correctIdentity = document.getElementById("correct-identity");
-  var birthYearRoc = document.getElementById("birth-year-roc");
-  var birthMonth = document.getElementById("birth-month");
-  var birthDay = document.getElementById("birth-day");
+  var correctBirth = document.getElementById("correct-birth");
   var reportSubmitButton = document.getElementById("report-submit-button");
   var reportCancelButton = document.getElementById("report-cancel-button");
   var reportStatus = document.getElementById("report-status");
@@ -352,9 +350,7 @@
       reportBirth,
       correctName,
       correctIdentity,
-      birthYearRoc,
-      birthMonth,
-      birthDay,
+      correctBirth,
       reportCancelButton,
     ];
     controls.forEach(function (control) {
@@ -374,9 +370,7 @@
     correctBirthField.hidden = true;
     correctName.value = "";
     correctIdentity.value = "";
-    birthYearRoc.value = "";
-    birthMonth.value = "";
-    birthDay.value = "";
+    correctBirth.value = "";
     reportStatus.textContent = "";
     setReportLoading(false);
   }
@@ -393,29 +387,48 @@
     reportStatus.textContent = "";
   }
 
-  function isValidRocDate(year, month, day) {
-    if (!/^\d{1,3}$/.test(year) || !/^\d{1,2}$/.test(month) || !/^\d{1,2}$/.test(day)) {
-      return false;
+  function parseRocDateInput(value) {
+    var text = String(value || "")
+      .trim()
+      .replace(/[\s\u3000]+/g, "")
+      .replace(/^民國/, "")
+      .replace(/年/g, "/")
+      .replace(/月/g, "/")
+      .replace(/日/g, "");
+    var parts;
+
+    if (/^\d{5,7}$/.test(text)) {
+      parts = [text.slice(0, -4), text.slice(-4, -2), text.slice(-2)];
+    } else {
+      var match = text.match(/^(\d{1,3})[\/.-](\d{1,2})[\/.-](\d{1,2})$/);
+      if (!match) return null;
+      parts = match.slice(1);
     }
-    var rocYear = Number(year);
-    var monthNumber = Number(month);
-    var dayNumber = Number(day);
-    if (rocYear < 1 || rocYear > 300 || monthNumber < 1 || monthNumber > 12) return false;
+
+    var rocYear = Number(parts[0]);
+    var monthNumber = Number(parts[1]);
+    var dayNumber = Number(parts[2]);
+    if (rocYear < 1 || rocYear > 300 || monthNumber < 1 || monthNumber > 12) return null;
     var date = new Date(Date.UTC(rocYear + 1911, monthNumber - 1, dayNumber));
-    return (
+    if (
       date.getUTCFullYear() === rocYear + 1911 &&
       date.getUTCMonth() === monthNumber - 1 &&
       date.getUTCDate() === dayNumber
-    );
+    ) {
+      return {
+        year: String(rocYear),
+        month: monthNumber < 10 ? "0" + monthNumber : String(monthNumber),
+        day: dayNumber < 10 ? "0" + dayNumber : String(dayNumber),
+      };
+    }
+    return null;
   }
 
   function collectCorrection() {
     var fields = [];
     var nameValue = correctName.value.trim();
     var identityValue = normaliseIdentity(correctIdentity.value);
-    var yearValue = String(birthYearRoc.value || "").trim();
-    var monthValue = String(birthMonth.value || "").trim();
-    var dayValue = String(birthDay.value || "").trim();
+    var parsedBirth = null;
 
     if (reportName.checked) {
       fields.push("name");
@@ -433,8 +446,9 @@
     }
     if (reportBirth.checked) {
       fields.push("birth");
-      if (!isValidRocDate(yearValue, monthValue, dayValue)) {
-        birthYearRoc.focus();
+      parsedBirth = parseRocDateInput(correctBirth.value);
+      if (!parsedBirth) {
+        correctBirth.focus();
         throw new Error("INVALID_BIRTH");
       }
     }
@@ -447,9 +461,9 @@
       fields: fields.join(","),
       correctName: reportName.checked ? nameValue : "",
       correctIdentity: reportIdentity.checked ? identityValue : "",
-      birthYearRoc: reportBirth.checked ? yearValue : "",
-      birthMonth: reportBirth.checked ? monthValue : "",
-      birthDay: reportBirth.checked ? dayValue : "",
+      birthYearRoc: parsedBirth ? parsedBirth.year : "",
+      birthMonth: parsedBirth ? parsedBirth.month : "",
+      birthDay: parsedBirth ? parsedBirth.day : "",
     };
   }
 
@@ -457,7 +471,7 @@
     if (error.message === "NO_FIELDS") return "請至少勾選一項有誤的資料。";
     if (error.message === "INVALID_NAME") return "請填寫正確姓名。";
     if (error.message === "INVALID_IDENTITY") return "請填寫完整且格式正確的身分證字號／身分碼。";
-    if (error.message === "INVALID_BIRTH") return "請填寫有效的民國年、月、日。";
+    if (error.message === "INVALID_BIRTH") return "請輸入有效的民國出生年月日，例如 810112。";
     return "請檢查更正資料後再送出。";
   }
 
@@ -563,7 +577,7 @@
   });
 
   reportBirth.addEventListener("change", function () {
-    toggleCorrectionField(reportBirth, correctBirthField, birthYearRoc);
+    toggleCorrectionField(reportBirth, correctBirthField, correctBirth);
   });
 
   reportCancelButton.addEventListener("click", function () {
