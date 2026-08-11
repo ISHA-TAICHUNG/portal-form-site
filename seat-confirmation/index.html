@@ -10,9 +10,9 @@
       content="輸入身分碼，確認姓名、身分證字號、出生年月日、座號與簽到表。"
     />
     <title>個人座位查詢</title>
-    <link rel="stylesheet" href="./styles.css?v=20260811-correction-report" />
-    <script src="./config.js?v=20260811-correction-report" defer></script>
-    <script src="./app.js?v=20260811-correction-report" defer></script>
+    <link rel="stylesheet" href="./styles.css?v=20260811-birth-keyin" />
+    <script src="./config.js?v=20260811-birth-keyin" defer></script>
+    <script src="./app.js?v=20260811-birth-keyin" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳到主要內容</a>
@@ -289,21 +289,18 @@
                       <span>出生年月日</span>
                     </label>
                     <div id="correct-birth-field" class="correction-field" hidden>
-                      <span class="correction-label">正確出生年月日（民國年）</span>
-                      <div class="roc-date-fields">
-                        <label>
-                          <span>民國年</span>
-                          <input id="birth-year-roc" type="number" min="1" max="300" inputmode="numeric" placeholder="例如 85" />
-                        </label>
-                        <label>
-                          <span>月</span>
-                          <input id="birth-month" type="number" min="1" max="12" inputmode="numeric" placeholder="03" />
-                        </label>
-                        <label>
-                          <span>日</span>
-                          <input id="birth-day" type="number" min="1" max="31" inputmode="numeric" placeholder="12" />
-                        </label>
-                      </div>
+                      <label for="correct-birth">
+                        正確出生年月日（民國年）
+                        <input
+                          id="correct-birth"
+                          type="text"
+                          maxlength="12"
+                          inputmode="numeric"
+                          autocomplete="off"
+                          placeholder="例如 810112"
+                        />
+                      </label>
+                      <p class="correction-hint">可連續輸入數字，也可輸入 81/01/12。</p>
                     </div>
                   </div>
                 </fieldset>
