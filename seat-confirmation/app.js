@@ -155,7 +155,7 @@
     }
 
     url.searchParams.set("id", identity);
-    url.searchParams.set("sid", sessionToken);
+    url.searchParams.set("clientToken", sessionToken);
     url.searchParams.set("callback", callbackName);
     url.searchParams.set("_", String(Date.now()));
 
