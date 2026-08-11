@@ -9,6 +9,7 @@
   var inputShell = document.querySelector(".input-shell");
   var resultSection = document.getElementById("result-section");
   var successSection = document.getElementById("success-section");
+  var reportSuccessSection = document.getElementById("report-success-section");
   var seatNumber = document.getElementById("seat-number");
   var successSeatNumber = document.getElementById("success-seat-number");
   var checkinSheetNumber = document.getElementById("checkin-sheet-number");
@@ -23,8 +24,23 @@
   var confirmButton = document.getElementById("confirm-button");
   var reportButton = document.getElementById("report-button");
   var confirmationStatus = document.getElementById("confirmation-status");
-  var reportHelp = document.getElementById("report-help");
+  var reportPanel = document.getElementById("report-panel");
+  var reportName = document.getElementById("report-name");
+  var reportIdentity = document.getElementById("report-identity");
+  var reportBirth = document.getElementById("report-birth");
+  var correctNameField = document.getElementById("correct-name-field");
+  var correctIdentityField = document.getElementById("correct-identity-field");
+  var correctBirthField = document.getElementById("correct-birth-field");
+  var correctName = document.getElementById("correct-name");
+  var correctIdentity = document.getElementById("correct-identity");
+  var birthYearRoc = document.getElementById("birth-year-roc");
+  var birthMonth = document.getElementById("birth-month");
+  var birthDay = document.getElementById("birth-day");
+  var reportSubmitButton = document.getElementById("report-submit-button");
+  var reportCancelButton = document.getElementById("report-cancel-button");
+  var reportStatus = document.getElementById("report-status");
   var newQueryButton = document.getElementById("new-query-button");
+  var reportNewQueryButton = document.getElementById("report-new-query-button");
   var state = { record: null, confirmationToken: "", identityRevealed: false };
   var sessionToken = makeSessionToken();
 
@@ -106,9 +122,10 @@
     confirmDetails.disabled = false;
     reportButton.disabled = false;
     confirmationStatus.textContent = "";
-    reportHelp.hidden = true;
+    resetReportForm();
     resultSection.hidden = false;
     successSection.hidden = true;
+    reportSuccessSection.hidden = true;
     lookupInput.value = "";
     setStatus("已找到資料，請向下核對。", "success");
     window.setTimeout(function () {
@@ -132,8 +149,9 @@
   function clearPreviousResult() {
     resultSection.hidden = true;
     successSection.hidden = true;
+    reportSuccessSection.hidden = true;
     confirmationStatus.textContent = "";
-    reportHelp.hidden = true;
+    resetReportForm();
     confirmDetails.checked = false;
     clearPersonalDataFromPage();
   }
@@ -145,11 +163,22 @@
     successSheetNumber.textContent = sheet;
     resultSection.hidden = true;
     successSection.hidden = false;
+    reportSuccessSection.hidden = true;
     clearPersonalDataFromPage();
     successSeatNumber.textContent = seat;
     successSheetNumber.textContent = sheet;
     window.setTimeout(function () {
       successSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 60);
+  }
+
+  function showReportSuccess() {
+    resultSection.hidden = true;
+    successSection.hidden = true;
+    reportSuccessSection.hidden = false;
+    clearPersonalDataFromPage();
+    window.setTimeout(function () {
+      reportSuccessSection.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 60);
   }
 
@@ -229,6 +258,20 @@
     });
   }
 
+  function reportWithJsonp(identity, confirmationToken, correction) {
+    return requestWithJsonp({
+      action: "report",
+      id: identity,
+      confirmationToken: confirmationToken,
+      fields: correction.fields,
+      correctName: correction.correctName,
+      correctIdentity: correction.correctIdentity,
+      birthYearRoc: correction.birthYearRoc,
+      birthMonth: correction.birthMonth,
+      birthDay: correction.birthDay,
+    });
+  }
+
   function payloadError(payload) {
     var error = new Error("SERVICE_ERROR");
     error.code = payload && payload.error ? String(payload.error) : "service_unavailable";
@@ -248,7 +291,32 @@
     if (error && error.code === "rate_limited") {
       return "操作次數過多，請稍候一分鐘再試。";
     }
+    if (error && error.code === "already_submitted") {
+      return "本次查詢已送出其他結果，請重新查詢後再操作。";
+    }
     return "查詢服務暫時無法使用，請稍後再試。";
+  }
+
+  function friendlyReportError(error) {
+    if (error && error.code === "invalid_report") {
+      return "請確認已勾選錯誤欄位，並完整填寫正確資料。";
+    }
+    if (error && error.code === "confirmation_expired") {
+      return "回報連結已逾時，請重新查詢後再填寫。";
+    }
+    if (error && error.code === "duplicate_identity") {
+      return "同一身分碼有重複資料，請改由承辦單位人工處理。";
+    }
+    if (error && error.code === "already_submitted") {
+      return "本次查詢已完成其他回傳，請重新查詢後再操作。";
+    }
+    if (error && error.code === "rate_limited") {
+      return "操作次數過多，請稍候一分鐘再試。";
+    }
+    if (error && error.message === "TIMEOUT") {
+      return "回報送出逾時，請重新查詢確認處理狀態後再試。";
+    }
+    return "更正回報暫時無法送出，資料仍保留在畫面上，請稍後再試。";
   }
 
   function friendlyConfirmationError(error) {
@@ -261,6 +329,9 @@
     if (error && error.code === "rate_limited") {
       return "操作次數過多，請稍候一分鐘再試。";
     }
+    if (error && error.code === "already_submitted") {
+      return "這筆資料已送出更正回報，無法再標記為確認正確。";
+    }
     if (error && error.message === "TIMEOUT") {
       return "確認回傳逾時；請先重新查詢，確認試算表狀態後再操作。";
     }
@@ -272,6 +343,122 @@
     confirmButton.textContent = isLoading ? "正在回傳…" : "確認資料";
     confirmDetails.disabled = isLoading;
     reportButton.disabled = isLoading;
+  }
+
+  function setReportLoading(isLoading) {
+    var controls = [
+      reportName,
+      reportIdentity,
+      reportBirth,
+      correctName,
+      correctIdentity,
+      birthYearRoc,
+      birthMonth,
+      birthDay,
+      reportCancelButton,
+    ];
+    controls.forEach(function (control) {
+      control.disabled = isLoading;
+    });
+    reportSubmitButton.disabled = isLoading;
+    reportSubmitButton.textContent = isLoading ? "正在送出…" : "送出更正回報";
+  }
+
+  function resetReportForm() {
+    reportPanel.hidden = true;
+    reportName.checked = false;
+    reportIdentity.checked = false;
+    reportBirth.checked = false;
+    correctNameField.hidden = true;
+    correctIdentityField.hidden = true;
+    correctBirthField.hidden = true;
+    correctName.value = "";
+    correctIdentity.value = "";
+    birthYearRoc.value = "";
+    birthMonth.value = "";
+    birthDay.value = "";
+    reportStatus.textContent = "";
+    setReportLoading(false);
+  }
+
+  function toggleCorrectionField(checkbox, field, input) {
+    field.hidden = !checkbox.checked;
+    if (!checkbox.checked) {
+      field.querySelectorAll("input").forEach(function (fieldInput) {
+        fieldInput.value = "";
+      });
+    } else if (input) {
+      input.focus({ preventScroll: true });
+    }
+    reportStatus.textContent = "";
+  }
+
+  function isValidRocDate(year, month, day) {
+    if (!/^\d{1,3}$/.test(year) || !/^\d{1,2}$/.test(month) || !/^\d{1,2}$/.test(day)) {
+      return false;
+    }
+    var rocYear = Number(year);
+    var monthNumber = Number(month);
+    var dayNumber = Number(day);
+    if (rocYear < 1 || rocYear > 300 || monthNumber < 1 || monthNumber > 12) return false;
+    var date = new Date(Date.UTC(rocYear + 1911, monthNumber - 1, dayNumber));
+    return (
+      date.getUTCFullYear() === rocYear + 1911 &&
+      date.getUTCMonth() === monthNumber - 1 &&
+      date.getUTCDate() === dayNumber
+    );
+  }
+
+  function collectCorrection() {
+    var fields = [];
+    var nameValue = correctName.value.trim();
+    var identityValue = normaliseIdentity(correctIdentity.value);
+    var yearValue = String(birthYearRoc.value || "").trim();
+    var monthValue = String(birthMonth.value || "").trim();
+    var dayValue = String(birthDay.value || "").trim();
+
+    if (reportName.checked) {
+      fields.push("name");
+      if (!nameValue || nameValue.length > 40) {
+        correctName.focus();
+        throw new Error("INVALID_NAME");
+      }
+    }
+    if (reportIdentity.checked) {
+      fields.push("identity");
+      if (!isPlausibleIdentity(identityValue)) {
+        correctIdentity.focus();
+        throw new Error("INVALID_IDENTITY");
+      }
+    }
+    if (reportBirth.checked) {
+      fields.push("birth");
+      if (!isValidRocDate(yearValue, monthValue, dayValue)) {
+        birthYearRoc.focus();
+        throw new Error("INVALID_BIRTH");
+      }
+    }
+    if (!fields.length) {
+      reportName.focus();
+      throw new Error("NO_FIELDS");
+    }
+
+    return {
+      fields: fields.join(","),
+      correctName: reportName.checked ? nameValue : "",
+      correctIdentity: reportIdentity.checked ? identityValue : "",
+      birthYearRoc: reportBirth.checked ? yearValue : "",
+      birthMonth: reportBirth.checked ? monthValue : "",
+      birthDay: reportBirth.checked ? dayValue : "",
+    };
+  }
+
+  function localReportError(error) {
+    if (error.message === "NO_FIELDS") return "請至少勾選一項有誤的資料。";
+    if (error.message === "INVALID_NAME") return "請填寫正確姓名。";
+    if (error.message === "INVALID_IDENTITY") return "請填寫完整且格式正確的身分證字號／身分碼。";
+    if (error.message === "INVALID_BIRTH") return "請填寫有效的民國年、月、日。";
+    return "請檢查更正資料後再送出。";
   }
 
   lookupInput.addEventListener("input", function () {
@@ -357,19 +544,76 @@
   });
 
   reportButton.addEventListener("click", function () {
-    reportHelp.hidden = !reportHelp.hidden;
-    if (!reportHelp.hidden) {
-      reportHelp.focus({ preventScroll: true });
-    }
+    confirmDetails.checked = false;
+    confirmDetails.disabled = true;
+    confirmButton.disabled = true;
+    reportPanel.hidden = false;
+    reportName.focus({ preventScroll: true });
+    window.setTimeout(function () {
+      reportPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }, 60);
   });
 
-  newQueryButton.addEventListener("click", function () {
+  reportName.addEventListener("change", function () {
+    toggleCorrectionField(reportName, correctNameField, correctName);
+  });
+
+  reportIdentity.addEventListener("change", function () {
+    toggleCorrectionField(reportIdentity, correctIdentityField, correctIdentity);
+  });
+
+  reportBirth.addEventListener("change", function () {
+    toggleCorrectionField(reportBirth, correctBirthField, birthYearRoc);
+  });
+
+  reportCancelButton.addEventListener("click", function () {
+    resetReportForm();
+    confirmDetails.disabled = false;
+    confirmButton.disabled = !confirmDetails.checked;
+    reportButton.focus();
+  });
+
+  reportSubmitButton.addEventListener("click", function () {
+    if (!state.record || !state.confirmationToken) return;
+    var correction;
+    try {
+      correction = collectCorrection();
+    } catch (error) {
+      reportStatus.textContent = localReportError(error);
+      return;
+    }
+
+    var identity = state.record.id;
+    var confirmationToken = state.confirmationToken;
+    reportStatus.textContent = "正在送出更正回報…";
+    setReportLoading(true);
+    reportWithJsonp(identity, confirmationToken, correction)
+      .then(function (payload) {
+        if (!payload || payload.ok !== true || payload.reported !== true) {
+          throw payloadError(payload);
+        }
+        reportStatus.textContent = "";
+        showReportSuccess();
+      })
+      .catch(function (error) {
+        reportStatus.textContent = friendlyReportError(error);
+      })
+      .finally(function () {
+        if (state.record) setReportLoading(false);
+      });
+  });
+
+  function startNewQuery() {
     successSection.hidden = true;
+    reportSuccessSection.hidden = true;
     resultSection.hidden = true;
     setStatus("");
     clearInputError();
     lookupInput.disabled = false;
     lookupInput.focus();
     window.scrollTo({ top: 0, behavior: "smooth" });
-  });
+  }
+
+  newQueryButton.addEventListener("click", startNewQuery);
+  reportNewQueryButton.addEventListener("click", startNewQuery);
 })();
