@@ -4,7 +4,8 @@
  * 不要把 Google 試算表匯出成 CSV、JSON 或其他檔案放進網站資料夾。
  */
 window.SEAT_APP_CONFIG = Object.freeze({
-  siteTitle: "\u5ea7\u865f\u8207\u8cc7\u6599\u78ba\u8a8d",
+  siteTitle: "座號與資料確認",
   apiUrl: "https://script.google.com/macros/s/AKfycbxz_MErRO1ZNfDEqOve_awJsZEmRFtzLAGcdz989atOOoY8x6DGdwvu5jxepjVBZPOK/exec",
   requestTimeoutMs: 12000,
 });
+
