@@ -10,9 +10,9 @@
       content="輸入身分碼，確認姓名、身分證字號、出生年月日、座號與簽到表。"
     />
     <title>個人座位查詢</title>
-    <link rel="stylesheet" href="./styles.css" />
-    <script src="./config.js?v=20260811-jsonp-fix" defer></script>
-    <script src="./app.js?v=20260811-confirm-writeback" defer></script>
+    <link rel="stylesheet" href="./styles.css?v=20260811-correction-report" />
+    <script src="./config.js?v=20260811-correction-report" defer></script>
+    <script src="./app.js?v=20260811-correction-report" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳到主要內容</a>
@@ -237,8 +237,99 @@
                 <button id="report-button" class="button button-quiet" type="button">資料有誤</button>
               </div>
               <p id="confirmation-status" class="report-help" role="status" aria-live="polite"></p>
-              <p id="report-help" class="report-help" tabindex="-1" hidden>請先不要完成確認，並依通知單或承辦單位提供的聯絡方式反映資料問題。</p>
+
+              <section id="report-panel" class="report-panel" aria-labelledby="report-title" hidden>
+                <div class="report-heading">
+                  <span class="report-heading-icon" aria-hidden="true">!</span>
+                  <div>
+                    <p class="panel-kicker">CORRECTION REQUEST</p>
+                    <h3 id="report-title">回報資料有誤</h3>
+                    <p>請勾選有誤的欄位，並填入正確資料。原資料不會立即被修改。</p>
+                  </div>
+                </div>
+
+                <fieldset class="report-fieldset">
+                  <legend>哪一項資料有誤？</legend>
+
+                  <div class="report-item">
+                    <label class="report-option" for="report-name">
+                      <input id="report-name" name="report-field" type="checkbox" value="name" />
+                      <span class="report-option-check" aria-hidden="true"></span>
+                      <span>姓名</span>
+                    </label>
+                    <div id="correct-name-field" class="correction-field" hidden>
+                      <label for="correct-name">正確姓名</label>
+                      <input id="correct-name" type="text" maxlength="40" autocomplete="name" />
+                    </div>
+                  </div>
+
+                  <div class="report-item">
+                    <label class="report-option" for="report-identity">
+                      <input id="report-identity" name="report-field" type="checkbox" value="identity" />
+                      <span class="report-option-check" aria-hidden="true"></span>
+                      <span>身分證字號</span>
+                    </label>
+                    <div id="correct-identity-field" class="correction-field" hidden>
+                      <label for="correct-identity">正確身分證字號／身分碼</label>
+                      <input
+                        id="correct-identity"
+                        type="text"
+                        maxlength="20"
+                        autocomplete="off"
+                        autocapitalize="characters"
+                        spellcheck="false"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="report-item">
+                    <label class="report-option" for="report-birth">
+                      <input id="report-birth" name="report-field" type="checkbox" value="birth" />
+                      <span class="report-option-check" aria-hidden="true"></span>
+                      <span>出生年月日</span>
+                    </label>
+                    <div id="correct-birth-field" class="correction-field" hidden>
+                      <span class="correction-label">正確出生年月日（民國年）</span>
+                      <div class="roc-date-fields">
+                        <label>
+                          <span>民國年</span>
+                          <input id="birth-year-roc" type="number" min="1" max="300" inputmode="numeric" placeholder="例如 85" />
+                        </label>
+                        <label>
+                          <span>月</span>
+                          <input id="birth-month" type="number" min="1" max="12" inputmode="numeric" placeholder="03" />
+                        </label>
+                        <label>
+                          <span>日</span>
+                          <input id="birth-day" type="number" min="1" max="31" inputmode="numeric" placeholder="12" />
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+
+                <p class="report-privacy-note">送出後將列為「待人工核對」，不會直接覆蓋原始名單。</p>
+                <div class="report-actions">
+                  <button id="report-submit-button" class="button button-danger" type="button">送出更正回報</button>
+                  <button id="report-cancel-button" class="button button-quiet" type="button">取消</button>
+                </div>
+                <p id="report-status" class="report-help" role="status" aria-live="polite"></p>
+              </section>
             </form>
+          </section>
+
+          <section id="report-success-section" class="success-section" aria-labelledby="report-success-title" hidden>
+            <div class="success-card is-report-success">
+              <div class="success-icon is-report" aria-hidden="true">✓</div>
+              <p class="panel-kicker">REPORT RECEIVED</p>
+              <h2 id="report-success-title">已收到資料更正回報</h2>
+              <p>承辦人員將依您提供的內容進行人工核對；送出回報不代表資料已立即修改。</p>
+              <div class="report-success-status">
+                <span aria-hidden="true">●</span>
+                處理狀態：待人工核對
+              </div>
+              <button id="report-new-query-button" class="button button-secondary" type="button">查詢另一筆資料</button>
+            </div>
           </section>
 
           <section id="success-section" class="success-section" aria-labelledby="success-title" hidden>
@@ -265,7 +356,7 @@
 
         <footer class="dashboard-footer">
           <span>本頁僅供個人資料與座號確認使用。</span>
-          <span>若資料有誤，請勿完成確認，直接聯絡承辦單位。</span>
+          <span>若資料有誤，可直接送出更正回報，由承辦人員人工核對。</span>
         </footer>
       </div>
     </div>
