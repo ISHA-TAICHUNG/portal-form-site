@@ -9,22 +9,22 @@
       name="description"
       content="輸入身分碼，確認姓名、身分證字號、出生年月日、座號與簽到表。"
     />
-    <title>個人座位查詢</title>
-    <link rel="stylesheet" href="./styles.css?v=20260811-birth-keyin" />
-    <script src="./config.js?v=20260811-birth-keyin" defer></script>
-    <script src="./app.js?v=20260811-birth-keyin" defer></script>
+    <title>個人座號查詢</title>
+    <link rel="stylesheet" href="./styles.css?v=20260812-course-app" />
+    <script src="./config.js?v=20260812-course-app" defer></script>
+    <script src="./app.js?v=20260812-course-app" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳到主要內容</a>
 
     <div class="app-shell">
       <aside class="sidebar" aria-label="服務導覽">
-        <a class="sidebar-brand" href="#top" aria-label="回到個人座位查詢首頁">
+        <a class="sidebar-brand" href="#top" aria-label="回到個人座號查詢首頁">
           <span class="brand-logo" aria-hidden="true">
             <span></span><span></span>
           </span>
           <span class="brand-wordmark">
-            <strong>座位查詢</strong>
+            <strong>座號查詢</strong>
             <small>CHECK-IN DESK</small>
           </span>
         </a>
@@ -38,7 +38,26 @@
                 <path d="m16 16 4.2 4.2" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
               </svg>
             </span>
-            <span>個人座位查詢</span>
+            <span>個人座號查詢</span>
+          </a>
+          <a class="nav-item" href="#course-materials">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M5 5.5A2.5 2.5 0 0 1 7.5 3H19v16H7.5A2.5 2.5 0 0 0 5 21.5v-16Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                <path d="M5 18.5A2.5 2.5 0 0 1 7.5 16H19M9 7h6M9 10h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+              </svg>
+            </span>
+            <span>課程教材</span>
+          </a>
+          <a class="nav-item" href="#certificate-app">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <rect x="6.5" y="2.5" width="11" height="19" rx="2.2" stroke="currentColor" stroke-width="1.8" />
+                <path d="M10 5.5h4M10.5 18.5h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                <path d="m9.5 12 1.7 1.7 3.5-3.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+            <span>發證 APP</span>
           </a>
         </nav>
 
@@ -74,7 +93,7 @@
             </button>
             <div>
               <p class="topbar-kicker">WORKSPACE / PERSONAL CHECK</p>
-              <span>個人座位查詢</span>
+              <span>個人座號查詢</span>
             </div>
           </div>
 
@@ -100,8 +119,8 @@
         <main id="main-content" class="dashboard-main" tabindex="-1">
           <div id="top" class="dashboard-heading">
             <div>
-              <p class="breadcrumb">首頁 <span>/</span> 個人座位查詢</p>
-              <h1>個人座位查詢</h1>
+              <p class="breadcrumb">首頁 <span>/</span> 個人座號查詢</p>
+              <h1>個人座號查詢</h1>
               <p>輸入身分碼，確認你的座號、簽到表與登記資料。</p>
             </div>
           </div>
@@ -140,7 +159,7 @@
                 <p id="identity-help" class="field-help">英文字母不分大小寫，請輸入完整字號。</p>
               </div>
               <button id="lookup-button" class="button button-primary" type="submit">
-                <span class="button-label">查詢座位</span>
+                <span class="button-label">查詢座號</span>
                 <span class="button-spinner" aria-hidden="true"></span>
                 <span class="button-arrow" aria-hidden="true">↗</span>
               </button>
@@ -155,11 +174,87 @@
               </span>
               <div>
                 <strong>隱私提醒</strong>
-                <p>查詢結果僅供座位確認使用，不會保存完整名單。</p>
+                <p>查詢結果僅供座號確認使用，不會保存完整名單。</p>
               </div>
             </aside>
 
             <div id="lookup-status" class="status-message" role="status" aria-live="polite"></div>
+          </section>
+
+          <section class="resource-hub" aria-labelledby="resource-hub-title">
+            <div class="resource-hub-heading">
+              <div>
+                <p class="panel-kicker">COURSE ESSENTIALS</p>
+                <h2 id="resource-hub-title">課程資源</h2>
+              </div>
+              <p>上課與發證所需連結集中在這裡。</p>
+            </div>
+
+            <div class="resource-grid">
+              <article id="course-materials" class="resource-card material-card">
+                <div class="resource-card-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M5 5.5A2.5 2.5 0 0 1 7.5 3H19v16H7.5A2.5 2.5 0 0 0 5 21.5v-16Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                    <path d="M5 18.5A2.5 2.5 0 0 1 7.5 16H19M9 7h6M9 10h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                  </svg>
+                </div>
+                <div class="resource-card-copy">
+                  <span class="resource-eyebrow">LEARNING MATERIALS</span>
+                  <h3>課程教材</h3>
+                  <p>開啟 Google Drive，查看課程講義與相關教材。</p>
+                </div>
+                <a
+                  class="resource-link"
+                  href="https://drive.google.com/drive/folders/1NTwQEM-AOyzwCKb4gegZNuNHk2LkWjBI"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  開啟教材
+                  <span aria-hidden="true">↗</span>
+                </a>
+              </article>
+
+              <article id="certificate-app" class="resource-card app-card">
+                <div class="resource-card-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <rect x="6.5" y="2.5" width="11" height="19" rx="2.2" stroke="currentColor" stroke-width="1.8" />
+                    <path d="M10 5.5h4M10.5 18.5h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                    <path d="m9.5 12 1.7 1.7 3.5-3.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </div>
+                <div class="resource-card-copy">
+                  <span class="resource-eyebrow">CERTIFICATE APP</span>
+                  <h3>發證 APP</h3>
+                  <p>請依手機系統下載「臺灣職安卡」。</p>
+                </div>
+                <div class="app-downloads" aria-label="發證 APP 下載">
+                  <a
+                    class="app-download-link"
+                    href="https://apps.apple.com/tw/app/%E8%87%BA%E7%81%A3%E8%81%B7%E5%AE%89%E5%8D%A1/id1473217137"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span class="platform-mark" aria-hidden="true">●</span>
+                    <span><small>iPhone / iPad</small><strong>iOS 下載</strong></span>
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                  <a
+                    class="app-download-link"
+                    href="https://play.google.com/store/apps/details?id=com.hyweb.m00.oscard&amp;hl=zh_TW"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span class="platform-mark is-android" aria-hidden="true">▶</span>
+                    <span><small>Android 手機</small><strong>Android 下載</strong></span>
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                </div>
+                <div class="app-open-notice" role="note">
+                  <span aria-hidden="true">!</span>
+                  <strong>下載後先不要開啟，下午考完試再打開。</strong>
+                </div>
+              </article>
+            </div>
           </section>
 
           <section id="result-section" class="result-section" aria-labelledby="result-title" hidden>
