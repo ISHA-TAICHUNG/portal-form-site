@@ -10,9 +10,9 @@
       content="輸入身分碼，確認姓名、身分證字號、出生年月日、座號與簽到表。"
     />
     <title>個人座號查詢</title>
-    <link rel="stylesheet" href="./styles.css?v=20260812-course-app" />
-    <script src="./config.js?v=20260812-course-app" defer></script>
-    <script src="./app.js?v=20260812-course-app" defer></script>
+    <link rel="stylesheet" href="./styles.css?v=20260813-online-quiz" />
+    <script src="./config.js?v=20260813-online-quiz" defer></script>
+    <script src="./app.js?v=20260813-online-quiz" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳到主要內容</a>
@@ -48,6 +48,16 @@
               </svg>
             </span>
             <span>課程教材</span>
+          </a>
+          <a class="nav-item" href="#online-quiz">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M7 3.5h10A2.5 2.5 0 0 1 19.5 6v12A2.5 2.5 0 0 1 17 20.5H7A2.5 2.5 0 0 1 4.5 18V6A2.5 2.5 0 0 1 7 3.5Z" stroke="currentColor" stroke-width="1.8" />
+                <path d="M8.5 8h7M8.5 12h3M8.5 16h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                <path d="m14 12.2 1.2 1.2 2.2-2.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+            <span>線上測驗</span>
           </a>
           <a class="nav-item" href="#certificate-app">
             <span class="nav-icon" aria-hidden="true">
@@ -187,7 +197,7 @@
                 <p class="panel-kicker">COURSE ESSENTIALS</p>
                 <h2 id="resource-hub-title">課程資源</h2>
               </div>
-              <p>上課與發證所需連結集中在這裡。</p>
+              <p>教材、測驗與發證所需連結集中在這裡。</p>
             </div>
 
             <div class="resource-grid">
@@ -210,6 +220,30 @@
                   rel="noopener noreferrer"
                 >
                   開啟教材
+                  <span aria-hidden="true">↗</span>
+                </a>
+              </article>
+
+              <article id="online-quiz" class="resource-card quiz-card">
+                <div class="resource-card-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M7 3.5h10A2.5 2.5 0 0 1 19.5 6v12A2.5 2.5 0 0 1 17 20.5H7A2.5 2.5 0 0 1 4.5 18V6A2.5 2.5 0 0 1 7 3.5Z" stroke="currentColor" stroke-width="1.8" />
+                    <path d="M8.5 8h7M8.5 12h3M8.5 16h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                    <path d="m14 12.2 1.2 1.2 2.2-2.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </div>
+                <div class="resource-card-copy">
+                  <span class="resource-eyebrow">ONLINE QUIZ</span>
+                  <h3>線上測驗</h3>
+                  <p>進入職安卡線上測驗系統，依現場指示登入作答。</p>
+                </div>
+                <a
+                  class="resource-link quiz-link"
+                  href="https://oshcard.osha.gov.tw/onlineQuiz/Login?trId=hpBJsAZGcPdg83axBA5DUA%3D%3D"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  進入測驗
                   <span aria-hidden="true">↗</span>
                 </a>
               </article>
