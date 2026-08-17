@@ -39,12 +39,48 @@
   var reportStatus = document.getElementById("report-status");
   var newQueryButton = document.getElementById("new-query-button");
   var reportNewQueryButton = document.getElementById("report-new-query-button");
+  var quizNav = document.querySelector("[data-quiz-nav]");
+  var quizCard = document.getElementById("online-quiz");
+  var quizLink = document.getElementById("quiz-link");
   var state = { record: null, confirmationToken: "", identityRevealed: false };
   var sessionToken = makeSessionToken();
 
   if (config.siteTitle) {
     document.title = String(config.siteTitle);
   }
+
+  function taipeiHour(date) {
+    var timeZone = String(config.quizTimeZone || "Asia/Taipei");
+    var formatter = new Intl.DateTimeFormat("en-US", {
+      timeZone: timeZone,
+      hour: "2-digit",
+      hour12: false,
+      hourCycle: "h23",
+    });
+    var hourPart = formatter.formatToParts(date).find(function (part) {
+      return part.type === "hour";
+    });
+    return hourPart ? Number(hourPart.value) : 0;
+  }
+
+  function updateQuizAvailability() {
+    if (!quizNav || !quizCard || !quizLink) return;
+    var availableHour = Number(config.quizAvailableHour);
+    if (!Number.isFinite(availableHour)) availableHour = 15;
+    var quizUrl = String(config.quizUrl || "").trim();
+    var isAvailable = Boolean(quizUrl) && taipeiHour(new Date()) >= availableHour;
+
+    quizNav.hidden = !isAvailable;
+    quizCard.hidden = !isAvailable;
+    if (isAvailable) {
+      quizLink.href = quizUrl;
+    } else {
+      quizLink.removeAttribute("href");
+    }
+  }
+
+  updateQuizAvailability();
+  window.setInterval(updateQuizAvailability, 30000);
 
   function makeSessionToken() {
     if (window.crypto && typeof window.crypto.randomUUID === "function") {
