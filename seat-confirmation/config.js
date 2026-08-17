@@ -5,6 +5,9 @@
  */
 window.SEAT_APP_CONFIG = Object.freeze({
   siteTitle: "個人座號查詢",
-  apiUrl: "https://script.google.com/macros/s/AKfycbxz_MErRO1ZNfDEqOve_awJsZEmRFtzLAGcdz989atOOoY8x6DGdwvu5jxepjVBZPOK/exec",
+  apiUrl: "https://script.google.com/macros/s/AKfycbx6E-AnuboxxLxd_ZH_f06THLnKobF_JQHDD3ullpQ4jcouonQyGU1rY9wbiTJOz-RP/exec",
   requestTimeoutMs: 12000,
+  quizUrl: "https://oshcard.osha.gov.tw/onlineQuiz/Login?trId=2xKy%2FK9yn513HBipeEQRvg%3D%3D",
+  quizTimeZone: "Asia/Taipei",
+  quizAvailableHour: 15,
 });
