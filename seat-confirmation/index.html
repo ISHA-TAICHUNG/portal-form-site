@@ -10,9 +10,9 @@
       content="輸入身分碼，確認姓名、身分證字號、出生年月日、座號與簽到表。"
     />
     <title>個人座號查詢</title>
-    <link rel="stylesheet" href="./styles.css?v=20260813-online-quiz" />
-    <script src="./config.js?v=20260813-online-quiz" defer></script>
-    <script src="./app.js?v=20260813-online-quiz" defer></script>
+    <link rel="stylesheet" href="./styles.css?v=20260817-quiz-after-15" />
+    <script src="./config.js?v=20260817-quiz-after-15" defer></script>
+    <script src="./app.js?v=20260817-quiz-after-15" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳到主要內容</a>
@@ -49,7 +49,7 @@
             </span>
             <span>課程教材</span>
           </a>
-          <a class="nav-item" href="#online-quiz">
+          <a class="nav-item" href="#online-quiz" data-quiz-nav hidden>
             <span class="nav-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none">
                 <path d="M7 3.5h10A2.5 2.5 0 0 1 19.5 6v12A2.5 2.5 0 0 1 17 20.5H7A2.5 2.5 0 0 1 4.5 18V6A2.5 2.5 0 0 1 7 3.5Z" stroke="currentColor" stroke-width="1.8" />
@@ -224,7 +224,7 @@
                 </a>
               </article>
 
-              <article id="online-quiz" class="resource-card quiz-card">
+              <article id="online-quiz" class="resource-card quiz-card" hidden>
                 <div class="resource-card-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none">
                     <path d="M7 3.5h10A2.5 2.5 0 0 1 19.5 6v12A2.5 2.5 0 0 1 17 20.5H7A2.5 2.5 0 0 1 4.5 18V6A2.5 2.5 0 0 1 7 3.5Z" stroke="currentColor" stroke-width="1.8" />
@@ -238,8 +238,8 @@
                   <p>進入職安卡線上測驗系統，依現場指示登入作答。</p>
                 </div>
                 <a
+                  id="quiz-link"
                   class="resource-link quiz-link"
-                  href="https://oshcard.osha.gov.tw/onlineQuiz/Login?trId=hpBJsAZGcPdg83axBA5DUA%3D%3D"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
