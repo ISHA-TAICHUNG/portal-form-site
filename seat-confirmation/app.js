@@ -44,43 +44,11 @@
   var quizLink = document.getElementById("quiz-link");
   var state = { record: null, confirmationToken: "", identityRevealed: false };
   var sessionToken = makeSessionToken();
+  var quizRefreshTimer = null;
 
   if (config.siteTitle) {
     document.title = String(config.siteTitle);
   }
-
-  function taipeiHour(date) {
-    var timeZone = String(config.quizTimeZone || "Asia/Taipei");
-    var formatter = new Intl.DateTimeFormat("en-US", {
-      timeZone: timeZone,
-      hour: "2-digit",
-      hour12: false,
-      hourCycle: "h23",
-    });
-    var hourPart = formatter.formatToParts(date).find(function (part) {
-      return part.type === "hour";
-    });
-    return hourPart ? Number(hourPart.value) : 0;
-  }
-
-  function updateQuizAvailability() {
-    if (!quizNav || !quizCard || !quizLink) return;
-    var availableHour = Number(config.quizAvailableHour);
-    if (!Number.isFinite(availableHour)) availableHour = 15;
-    var quizUrl = String(config.quizUrl || "").trim();
-    var isAvailable = Boolean(quizUrl) && taipeiHour(new Date()) >= availableHour;
-
-    quizNav.hidden = !isAvailable;
-    quizCard.hidden = !isAvailable;
-    if (isAvailable) {
-      quizLink.href = quizUrl;
-    } else {
-      quizLink.removeAttribute("href");
-    }
-  }
-
-  updateQuizAvailability();
-  window.setInterval(updateQuizAvailability, 30000);
 
   function makeSessionToken() {
     if (window.crypto && typeof window.crypto.randomUUID === "function") {
@@ -282,6 +250,45 @@
 
   function lookupWithJsonp(identity) {
     return requestWithJsonp({ action: "lookup", id: identity });
+  }
+
+  function quizConfigWithJsonp() {
+    return requestWithJsonp({ action: "quiz_config" });
+  }
+
+  function renderQuizAvailability(payload) {
+    if (!quizNav || !quizCard || !quizLink) return;
+    var quizUrl = payload && payload.quizAvailable ? String(payload.quizUrl || "").trim() : "";
+    var isAvailable = /^https:\/\/oshcard\.osha\.gov\.tw\/onlineQuiz\/Login\?/i.test(quizUrl);
+
+    quizNav.hidden = !isAvailable;
+    quizCard.hidden = !isAvailable;
+    if (isAvailable) {
+      quizLink.href = quizUrl;
+    } else {
+      quizLink.removeAttribute("href");
+    }
+  }
+
+  function scheduleQuizRefresh(seconds) {
+    window.clearTimeout(quizRefreshTimer);
+    var delaySeconds = Number(seconds);
+    if (!Number.isFinite(delaySeconds)) delaySeconds = 60;
+    delaySeconds = Math.max(15, Math.min(delaySeconds + 2, 21600));
+    quizRefreshTimer = window.setTimeout(refreshQuizConfig, delaySeconds * 1000);
+  }
+
+  function refreshQuizConfig() {
+    quizConfigWithJsonp()
+      .then(function (payload) {
+        if (!payload || payload.ok !== true) throw payloadError(payload);
+        renderQuizAvailability(payload);
+        scheduleQuizRefresh(payload.secondsUntilRefresh);
+      })
+      .catch(function () {
+        renderQuizAvailability(null);
+        scheduleQuizRefresh(60);
+      });
   }
 
   function confirmWithJsonp(identity, confirmationToken) {
@@ -666,4 +673,10 @@
 
   newQueryButton.addEventListener("click", startNewQuery);
   reportNewQueryButton.addEventListener("click", startNewQuery);
+
+  window.addEventListener("focus", refreshQuizConfig);
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) refreshQuizConfig();
+  });
+  refreshQuizConfig();
 })();
